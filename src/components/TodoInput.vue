@@ -22,6 +22,7 @@ export default {
         let value = this.newText;
         // console.log(value);
         this.$emit("addTodo", value);
+        this.newText = "";
       }
     },
   },
@@ -39,6 +40,10 @@ form {
   button {
     width: 56px;
     font-size: 20px;
+    transition: all 0.5s;
+    &:hover {
+      background: #ddd;
+    }
   }
 }
 </style>
