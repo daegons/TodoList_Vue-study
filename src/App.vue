@@ -3,19 +3,18 @@
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addTodo="addTodo"></TodoInput>
     <TodoList v-bind:todos="todos"></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoFooter v-bind:todos="todos"></TodoFooter>
   </div>
 </template>
 
 <script>
 import "./assets/reset.css";
 import TodoList from "./components/TodoList.vue";
-
 import TodoHeader from "./components/TodoHeader.vue";
-
 import TodoInput from "./components/TodoInput.vue";
-
 import TodoFooter from "./components/TodoFooter.vue";
+// import { unwatchFile } from "fs";
+
 export default {
   name: "App",
   data() {
@@ -24,10 +23,20 @@ export default {
       id: 0,
     };
   },
+  created() {
+    if (localStorage.id) {
+      this.id = JSON.parse(localStorage.id);
+    }
+    if (localStorage.todos) {
+      this.todos = JSON.parse(localStorage.todos);
+    }
+  },
   methods: {
-    addTodo(text) {
-      this.todos.push({ id: this.id, text: text, modify: false });
+    addTodo(value) {
+      this.todos.push({ id: this.id, text: value, modify: false });
       this.id++;
+      localStorage.id = JSON.stringify(this.id);
+      localStorage.todos = JSON.stringify(this.todos);
     },
   },
   components: {

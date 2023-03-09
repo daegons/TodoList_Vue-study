@@ -36,13 +36,15 @@ form {
   input {
     flex: 1 1 0;
     padding-left: 1em;
+    background: #555;
+    color: white;
   }
   button {
     width: 56px;
     font-size: 20px;
     transition: all 0.5s;
     &:hover {
-      background: #ddd;
+      background: #999;
     }
   }
 }

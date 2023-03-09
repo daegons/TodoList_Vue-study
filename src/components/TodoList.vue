@@ -1,7 +1,7 @@
 <template>
   <div id="list">
     <ul>
-      <li v-for="item in todos" v-bind:key="item.id">
+      <li v-for="(item, num) in todos" v-bind:key="item.id">
         <i
           v-bind:class="{
             'fa-solid': true,
@@ -10,8 +10,14 @@
           }"
           @click="onToggle(todos, item.id)"
         ></i>
-        <input type="text" v-bind:value="item.text" disabled />
-        <i class="fa-solid fa-trash-can"></i>
+        <input
+          type="text"
+          @input="onInput"
+          v-bind:value="item.text"
+          v-bind:disabled="item.modify"
+        />
+        {{ item.id }}
+        <i class="fa-solid fa-trash-can" @click="onRemove(todos, num)"></i>
       </li>
     </ul>
   </div>
@@ -21,13 +27,34 @@
 export default {
   name: "TodoList",
   props: ["todos"],
+  data() {
+    return {
+      inputText: "",
+    };
+  },
   methods: {
     onToggle(todos, id) {
       todos.map((item) => {
         if (item.id === id) {
           item.modify = !item.modify;
+          if (item.modify) {
+            if (this.inputText) {
+              item.text = this.inputText;
+            } else {
+              return false;
+            }
+          }
         }
       });
+      localStorage.todos = JSON.stringify(todos);
+    },
+    onInput(e) {
+      console.log(e.target.value);
+      this.inputText = e.target.value;
+    },
+    onRemove(todos, num) {
+      todos.splice(num, 1);
+      localStorage.todos = JSON.stringify(todos);
     },
   },
 };
@@ -47,7 +74,9 @@ export default {
       align-items: center;
       input {
         flex: 1;
-        margin-left: 10px;
+        margin: 0 10px;
+        padding: 10px 5px;
+        background: none;
       }
     }
   }
